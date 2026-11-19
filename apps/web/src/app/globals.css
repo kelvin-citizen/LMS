@@ -1,26 +1,106 @@
 @import "tailwindcss";
 
+/* Brand palette sampled from the new Child Time logo (2026): royal-blue shield (#0A5BE3 = royal-600),
+   lemon-yellow flame (#FFEC00 = gold-400), white field. School colours: yellow and blue. */
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #071a3d;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-jakarta);
+  --font-display: var(--font-fraunces);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@theme {
+  --color-royal-50: #eef4ff;
+  --color-royal-100: #dbe7ff;
+  --color-royal-200: #bed3ff;
+  --color-royal-300: #8fb4fb;
+  --color-royal-400: #5a8ff2;
+  --color-royal-500: #2c70ea;
+  --color-royal-600: #0a5be3;
+  --color-royal-700: #0849bd;
+  --color-royal-800: #0a3c97;
+  --color-royal-900: #0b3074;
+  --color-royal-950: #071d48;
+
+  --color-gold-50: #fffde6;
+  --color-gold-100: #fffbbf;
+  --color-gold-200: #fff685;
+  --color-gold-300: #fff23d;
+  --color-gold-400: #ffec00;
+  --color-gold-500: #e6d200;
+  --color-gold-600: #b8a300;
+
+  --color-flame: #ffec00;
+
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-marquee: marquee 40s linear infinite;
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-12px);
+    }
   }
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+}
+
+/* No global scroll-padding: it makes Next.js re-scroll on every page open.
+   Anchor targets use scroll-mt-* instead so they clear the fixed navbar. */
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+::selection {
+  background: var(--color-gold-300);
+  color: var(--color-royal-900);
+}
+
+/* Scroll-reveal, driven by components/ui/Reveal.tsx */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal[data-visible="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .animate-float,
+  .animate-marquee {
+    animation: none;
+  }
 }
